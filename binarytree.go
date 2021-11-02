@@ -1,7 +1,7 @@
 package binarytree
 
 import (
-	"fmt"
+	"errors"
 	"sync"
 )
 
@@ -17,6 +17,7 @@ type SingleNode interface {
 	IsHead() bool
 	CanConnect() bool
 	GetAll() map[interface{}]SingleNode
+	GetIndex() interface{}
 }
 
 type Tree struct {
@@ -24,6 +25,8 @@ type Tree struct {
 	nodes    map[interface{}]SingleNode
 	fillNode func(interface{}, uint64) SingleNode
 }
+
+var Default = Tree{}
 
 func (receiver *Tree) SetFillNode(function func(interface{}, uint64) SingleNode) {
 	receiver.mutex.Lock()
@@ -48,7 +51,6 @@ func (receiver *Tree) ToggleHead(node interface{}) {
 	receiver.mutex.Lock()
 	defer receiver.mutex.Unlock()
 
-	fmt.Println("Toggling a head, corrent head is ", receiver.nodes[node].IsHead())
 	receiver.nodes[node].ToggleHead()
 }
 
@@ -104,20 +106,16 @@ func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 	receiver.mutex.Lock()
 	defer receiver.mutex.Unlock()
 
-	fmt.Println("LevelNodes ", level)
 	var output []SingleNode = []SingleNode{}
 	for nodeIndex := range receiver.nodes {
 		if receiver.nodes[nodeIndex].IsHead() {
 			output = append(output, receiver.nodes[nodeIndex])
-			fmt.Println("Head found !")
 			if level == 1 {
-				fmt.Println("Requested level is 1 so end")
 				return output
 			}
 		}
 	}
 	if len(output) == 0 {
-		fmt.Println("Head did not found!")
 		return output
 	}
 	var index uint = 1
@@ -128,7 +126,8 @@ func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 		}
 		output = []SingleNode{}
 		for _, nodes := range currentLevelNodes {
-			for _, child := range nodes.GetAll() {
+			for indx := range nodes.GetAll() {
+				child := receiver.Get(indx)
 				if child.CanConnect() {
 					output = append(output, child)
 				}
@@ -145,4 +144,31 @@ func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 		index++
 	}
 	return output
+}
+
+func (receiver *Tree) InsertTree(childNode interface{}) error {
+	var level uint = 1
+	var levelNodes []SingleNode
+	for {
+		levelNodes = receiver.LevelNodes(level)
+		if len(levelNodes) == 0 {
+			return errors.New("no available aode found")
+		}
+		for _, node := range levelNodes {
+
+			if node.GetLength() < 2 {
+				receiver.InsertConnected(node.GetIndex(), childNode)
+				return nil
+			}
+		}
+		level++
+	}
+}
+
+func (receiver *Tree) InsertChild(childNode interface{}, canConnect bool) error {
+	receiver.Insert(childNode)
+	if canConnect {
+		receiver.ToggleCanConnect(childNode)
+	}
+	return receiver.InsertTree(childNode)
 }
