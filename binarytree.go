@@ -146,26 +146,26 @@ func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 	return output
 }
 
-func (receiver *Tree) InsertTree(childNode interface{}) error {
+func (receiver *Tree) InsertTree(childNode interface{}) (SingleNode, error) {
 	var level uint = 1
 	var levelNodes []SingleNode
 	for {
 		levelNodes = receiver.LevelNodes(level)
 		if len(levelNodes) == 0 {
-			return errors.New("no available aode found")
+			return nil, errors.New("no available aode found")
 		}
 		for _, node := range levelNodes {
 
 			if node.GetLength() < 2 {
 				receiver.InsertConnected(node.GetIndex(), childNode)
-				return nil
+				return node, nil
 			}
 		}
 		level++
 	}
 }
 
-func (receiver *Tree) InsertChild(childNode interface{}, canConnect bool) error {
+func (receiver *Tree) InsertChild(childNode interface{}, canConnect bool) (SingleNode, error) {
 	receiver.Insert(childNode)
 	if canConnect {
 		receiver.ToggleCanConnect(childNode)

@@ -334,13 +334,13 @@ func TestWebSocketMap_InsertTree(t *testing.T) {
 	var nodeTwo *websocket.Conn = &websocket.Conn{}
 	websocketmaps.Insert(nodeOne)
 	websocketmaps.ToggleCanConnect(nodeOne)
-	err := websocketmaps.InsertTree(nodeOne)
+	_, err := websocketmaps.InsertTree(nodeOne)
 	if err != nil {
 		t.Errorf("Error Happend! %e", err)
 	}
 	websocketmaps.Insert(nodeTwo)
 	websocketmaps.ToggleCanConnect(nodeTwo)
-	err = websocketmaps.InsertTree(nodeTwo)
+	_, err = websocketmaps.InsertTree(nodeTwo)
 	if err != nil {
 		t.Errorf("Error Happend! %e", err)
 	}
@@ -352,13 +352,13 @@ func TestWebSocketMap_InsertTree(t *testing.T) {
 	var nodeFour *websocket.Conn = &websocket.Conn{}
 	websocketmaps.Insert(nodeThree)
 	websocketmaps.ToggleCanConnect(nodeThree)
-	err = websocketmaps.InsertTree(nodeThree)
+	_, err = websocketmaps.InsertTree(nodeThree)
 	if err != nil {
 		t.Errorf("Error Happend! %e", err)
 	}
 	websocketmaps.Insert(nodeFour)
 	websocketmaps.ToggleCanConnect(nodeFour)
-	err = websocketmaps.InsertTree(nodeFour)
+	_, err = websocketmaps.InsertTree(nodeFour)
 	if err != nil {
 		t.Errorf("Error Happend! %e", err)
 	}
@@ -382,11 +382,11 @@ func TestWebSocketMap_InsertChild(t *testing.T) {
 	}
 	var nodeOne *websocket.Conn = &websocket.Conn{}
 	var nodeTwo *websocket.Conn = &websocket.Conn{}
-	err := websocketmaps.InsertChild(nodeOne, true)
+	_, err := websocketmaps.InsertChild(nodeOne, true)
 	if err != nil {
 		t.Errorf("Error Happend! %e", err)
 	}
-	err = websocketmaps.InsertChild(nodeTwo, true)
+	_, err = websocketmaps.InsertChild(nodeTwo, true)
 	if err != nil {
 		t.Errorf("Error Happend! %e", err)
 	}
@@ -396,11 +396,11 @@ func TestWebSocketMap_InsertChild(t *testing.T) {
 	}
 	var nodeThree *websocket.Conn = &websocket.Conn{}
 	var nodeFour *websocket.Conn = &websocket.Conn{}
-	err = websocketmaps.InsertChild(nodeThree, true)
+	_, err = websocketmaps.InsertChild(nodeThree, true)
 	if err != nil {
 		t.Errorf("Error Happend! %e", err)
 	}
-	err = websocketmaps.InsertChild(nodeFour, true)
+	_, err = websocketmaps.InsertChild(nodeFour, true)
 	if err != nil {
 		t.Errorf("Error Happend! %e", err)
 	}
