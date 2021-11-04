@@ -152,7 +152,9 @@ func (receiver *Tree) InsertTree(childNode interface{}) (SingleNode, error) {
 	var level uint = 1
 	var levelNodes []SingleNode
 	for {
+		fmt.Println("checking level ", level)
 		levelNodes = receiver.LevelNodes(level)
+		fmt.Println("level nodes ", len(levelNodes))
 		if len(levelNodes) == 0 {
 			return nil, errors.New("no available aode found")
 		}
