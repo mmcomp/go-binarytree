@@ -2,6 +2,7 @@ package binarytree
 
 import (
 	"errors"
+	"fmt"
 	"sync"
 )
 
@@ -84,6 +85,7 @@ func (receiver *Tree) InsertConnected(parentNode interface{}, childNode SingleNo
 		receiver.nodes = make(map[interface{}]SingleNode)
 	}
 
+	fmt.Println("InsertConnected")
 	receiver.nodes[parentNode].Insert(childNode)
 }
 
@@ -146,6 +148,7 @@ func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 }
 
 func (receiver *Tree) InsertTree(childNode interface{}) (SingleNode, error) {
+	fmt.Println("InsertTree")
 	var level uint = 1
 	var levelNodes []SingleNode
 	for {
@@ -165,8 +168,10 @@ func (receiver *Tree) InsertTree(childNode interface{}) (SingleNode, error) {
 }
 
 func (receiver *Tree) InsertChild(childNode interface{}, canConnect bool) (SingleNode, error) {
+	fmt.Println("InsertChild")
 	if canConnect {
 		receiver.ToggleCanConnect(childNode)
+		fmt.Println("ToggleCanConnect")
 	}
 	return receiver.InsertTree(childNode)
 }
