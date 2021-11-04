@@ -122,6 +122,8 @@ func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 	var index uint = 1
 	var currentLevelNodes []SingleNode = output
 	for {
+		fmt.Println("index ", index)
+		fmt.Println("currentLevelNodes ", len(currentLevelNodes))
 		if len(currentLevelNodes) == 0 {
 			break
 		}
@@ -156,7 +158,7 @@ func (receiver *Tree) InsertTree(childNode interface{}) (SingleNode, error) {
 		levelNodes = receiver.LevelNodes(level)
 		fmt.Println("level nodes ", len(levelNodes))
 		if len(levelNodes) == 0 {
-			return nil, errors.New("no available aode found")
+			return nil, errors.New("no available node found")
 		}
 		for _, node := range levelNodes {
 
