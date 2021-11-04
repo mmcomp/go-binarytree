@@ -166,7 +166,6 @@ func (receiver *Tree) InsertTree(childNode interface{}) (SingleNode, error) {
 }
 
 func (receiver *Tree) InsertChild(childNode interface{}, canConnect bool) (SingleNode, error) {
-	receiver.Insert(childNode)
 	if canConnect {
 		receiver.ToggleCanConnect(childNode)
 	}
