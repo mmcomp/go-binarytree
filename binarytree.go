@@ -8,7 +8,7 @@ import (
 var ConnectedIndex uint64 = 0
 
 type SingleNode interface {
-	Insert(interface{}, uint64)
+	Insert(SingleNode)
 	Get(interface{}) SingleNode
 	Delete(interface{})
 	ToggleHead()
@@ -76,7 +76,7 @@ func (receiver *Tree) Delete(node interface{}) {
 	delete(receiver.nodes, node)
 }
 
-func (receiver *Tree) InsertConnected(parentNode, childNode interface{}) {
+func (receiver *Tree) InsertConnected(parentNode interface{}, childNode SingleNode) {
 	receiver.mutex.Lock()
 	defer receiver.mutex.Unlock()
 
@@ -84,8 +84,7 @@ func (receiver *Tree) InsertConnected(parentNode, childNode interface{}) {
 		receiver.nodes = make(map[interface{}]SingleNode)
 	}
 
-	receiver.nodes[parentNode].Insert(childNode, ConnectedIndex)
-	ConnectedIndex++
+	receiver.nodes[parentNode].Insert(childNode)
 }
 
 func (receiver *Tree) DeleteConnected(parentNode, childNode interface{}) {
@@ -157,7 +156,7 @@ func (receiver *Tree) InsertTree(childNode interface{}) (SingleNode, error) {
 		for _, node := range levelNodes {
 
 			if node.GetLength() < 2 {
-				receiver.InsertConnected(node.GetIndex(), childNode)
+				receiver.InsertConnected(node.GetIndex(), receiver.Get(childNode))
 				return node, nil
 			}
 		}
