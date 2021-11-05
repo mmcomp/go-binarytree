@@ -1,7 +1,6 @@
 package binarytree
 
 import (
-	"errors"
 	"fmt"
 	"sync"
 )
@@ -119,7 +118,7 @@ func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 	if len(output) == 0 {
 		return output
 	}
-	var index uint = 1
+	var index uint = 2
 	var currentLevelNodes []SingleNode = output
 	for {
 		fmt.Println("index ", index)
@@ -140,7 +139,7 @@ func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 		if len(output) == 0 {
 			break
 		}
-		if index == level-1 {
+		if index == level {
 			return output
 		}
 		currentLevelNodes = output
@@ -158,14 +157,13 @@ func (receiver *Tree) InsertTree(childNode interface{}) (SingleNode, error) {
 		fmt.Println("checking level ", level)
 		levelNodes = receiver.LevelNodes(level)
 		fmt.Println("level nodes ", len(levelNodes))
-		if len(levelNodes) == 0 {
-			return nil, errors.New("no available node found")
-		}
-		for _, node := range levelNodes {
+		if len(levelNodes) > 0 {
+			for _, node := range levelNodes {
 
-			if node.GetLength() < 2 {
-				receiver.InsertConnected(node.GetIndex(), receiver.Get(childNode))
-				return node, nil
+				if node.GetLength() < 2 {
+					receiver.InsertConnected(node.GetIndex(), receiver.Get(childNode))
+					return node, nil
+				}
 			}
 		}
 		level++

@@ -1,6 +1,7 @@
 package binarytree
 
 import (
+	"fmt"
 	"strconv"
 	"testing"
 
@@ -365,6 +366,23 @@ func TestWebSocketMap_InsertTree(t *testing.T) {
 	}
 }
 
+// func PrintTree(awebsocketmaps Tree) {
+// 	var levelNodes []SingleNode
+// 	var level uint = 1
+// 	for {
+// 		fmt.Println("Level ", level)
+// 		levelNodes = awebsocketmaps.LevelNodes(level)
+// 		if len(levelNodes) == 0 {
+// 			return
+// 		}
+// 		for i, testNode := range levelNodes {
+// 			fmt.Println("test node ", i, testNode.(*MySocket).ID)
+// 		}
+// 		level++
+// 	}
+
+// }
+
 func TestWebSocketMap_InsertChild(t *testing.T) {
 	var websocketmaps Tree = Tree{}
 	websocketmaps.SetFillNode(fillFunction)
@@ -376,6 +394,19 @@ func TestWebSocketMap_InsertChild(t *testing.T) {
 	levelNodes := websocketmaps.LevelNodes(1)
 	if len(levelNodes) != 1 {
 		t.Errorf("Test with a broadcaster should return 1 nodes in level 1 but it retuens %d", len(levelNodes))
+	}
+	var level uint = 1
+	fmt.Println('-')
+	for {
+		fmt.Println("*Level ", level)
+		levelNodes = websocketmaps.LevelNodes(level)
+		if len(levelNodes) == 0 {
+			break
+		}
+		for i, testNode := range levelNodes {
+			fmt.Println("*test node ", i, testNode.(*MySocket).ID)
+		}
+		level++
 	}
 	var nodeOne *websocket.Conn = &websocket.Conn{}
 	var nodeTwo *websocket.Conn = &websocket.Conn{}
@@ -393,6 +424,19 @@ func TestWebSocketMap_InsertChild(t *testing.T) {
 	if len(levelNodes) != 2 {
 		t.Errorf("Test with 2 nodes connected to the broadcaster should return 2 nodes in level 2 but it retuens %d", len(levelNodes))
 	}
+	fmt.Println('-')
+	level = 1
+	for {
+		fmt.Println("*Level ", level)
+		levelNodes = websocketmaps.LevelNodes(level)
+		if len(levelNodes) == 0 {
+			break
+		}
+		for i, testNode := range levelNodes {
+			fmt.Println("*test node ", i, testNode.(*MySocket).ID)
+		}
+		level++
+	}
 	var nodeThree *websocket.Conn = &websocket.Conn{}
 	var nodeFour *websocket.Conn = &websocket.Conn{}
 	websocketmaps.Insert(nodeThree)
@@ -408,5 +452,18 @@ func TestWebSocketMap_InsertChild(t *testing.T) {
 	levelNodes = websocketmaps.LevelNodes(3)
 	if len(levelNodes) != 2 {
 		t.Errorf("Test with 2 nodes connected to the nodeOne should return 2 nodes in level 3 but it retuens %d", len(levelNodes))
+	}
+	fmt.Println('-')
+	level = 1
+	for {
+		fmt.Println("*Level ", level)
+		levelNodes = websocketmaps.LevelNodes(level)
+		if len(levelNodes) == 0 {
+			break
+		}
+		for i, testNode := range levelNodes {
+			fmt.Println("*test node ", i, testNode.(*MySocket).ID)
+		}
+		level++
 	}
 }
