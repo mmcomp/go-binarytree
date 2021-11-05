@@ -118,7 +118,7 @@ func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 	if len(output) == 0 {
 		return output
 	}
-	var index uint = 2
+	var index uint = 1
 	var currentLevelNodes []SingleNode = output
 	for {
 		fmt.Println("index ", index)
@@ -139,7 +139,7 @@ func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 		if len(output) == 0 {
 			break
 		}
-		if index == level {
+		if index == level-1 {
 			return output
 		}
 		currentLevelNodes = output
