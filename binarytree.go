@@ -126,9 +126,9 @@ func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 		for _, nodes := range currentLevelNodes {
 			for indx := range nodes.GetAll() {
 				child := receiver.Get(indx)
-				// if child.CanConnect() {
-				output = append(output, child)
-				// }
+				if child.CanConnect() {
+					output = append(output, child)
+				}
 			}
 		}
 		if len(output) == 0 {
