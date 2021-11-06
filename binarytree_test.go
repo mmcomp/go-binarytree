@@ -366,23 +366,6 @@ func TestWebSocketMap_InsertTree(t *testing.T) {
 	}
 }
 
-// func PrintTree(awebsocketmaps Tree) {
-// 	var levelNodes []SingleNode
-// 	var level uint = 1
-// 	for {
-// 		fmt.Println("Level ", level)
-// 		levelNodes = awebsocketmaps.LevelNodes(level)
-// 		if len(levelNodes) == 0 {
-// 			return
-// 		}
-// 		for i, testNode := range levelNodes {
-// 			fmt.Println("test node ", i, testNode.(*MySocket).ID)
-// 		}
-// 		level++
-// 	}
-
-// }
-
 func TestWebSocketMap_InsertChild(t *testing.T) {
 	var websocketmaps Tree = Tree{}
 	websocketmaps.SetFillNode(fillFunction)
@@ -465,5 +448,52 @@ func TestWebSocketMap_InsertChild(t *testing.T) {
 			fmt.Println("*test node ", i, testNode.(*MySocket).ID)
 		}
 		level++
+	}
+}
+
+func TestWebSocketMap_3Aud(t *testing.T) {
+	var websocketmaps Tree = Tree{}
+	websocketmaps.SetFillNode(fillFunction)
+
+	var broadcaster *websocket.Conn = &websocket.Conn{}
+	websocketmaps.Insert(broadcaster)
+	websocketmaps.ToggleHead(broadcaster)
+	websocketmaps.ToggleCanConnect(broadcaster)
+	levelNodes := websocketmaps.LevelNodes(1)
+	if len(levelNodes) != 1 {
+		t.Errorf("Test with a broadcaster should return 1 nodes in level 1 but it retuens %d", len(levelNodes))
+	}
+	var nodeOne *websocket.Conn = &websocket.Conn{}
+	var nodeTwo *websocket.Conn = &websocket.Conn{}
+	websocketmaps.Insert(nodeOne)
+	_, err := websocketmaps.InsertChild(nodeOne, true)
+	if err != nil {
+		t.Errorf("Error Happend! %e", err)
+	}
+	websocketmaps.Insert(nodeTwo)
+	_, err = websocketmaps.InsertChild(nodeTwo, true)
+	if err != nil {
+		t.Errorf("Error Happend! %e", err)
+	}
+	levelNodes = websocketmaps.LevelNodes(2)
+	if len(levelNodes) != 2 {
+		t.Errorf("Test with 2 nodes connected to the broadcaster should return 2 nodes in level 2 but it retuens %d", len(levelNodes))
+	}
+
+	var nodeThree *websocket.Conn = &websocket.Conn{}
+	var nodeFour *websocket.Conn = &websocket.Conn{}
+	websocketmaps.Insert(nodeThree)
+	_, err = websocketmaps.InsertChild(nodeThree, true)
+	if err != nil {
+		t.Errorf("Error Happend! %e", err)
+	}
+	websocketmaps.Insert(nodeFour)
+	_, err = websocketmaps.InsertChild(nodeFour, true)
+	if err != nil {
+		t.Errorf("Error Happend! %e", err)
+	}
+	levelNodes = websocketmaps.LevelNodes(3)
+	if len(levelNodes) != 2 {
+		t.Errorf("Test with 2 nodes connected to the nodeOne should return 2 nodes in level 3 but it retuens %d", len(levelNodes))
 	}
 }
