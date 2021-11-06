@@ -132,9 +132,9 @@ func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 			for indx := range nodes.GetAll() {
 				child := receiver.Get(indx)
 				fmt.Println("Child ", indx, " canconnect ", child.CanConnect())
-				if child.CanConnect() {
-					output = append(output, child)
-				}
+				// if child.CanConnect() {
+				output = append(output, child)
+				// }
 			}
 		}
 		if len(output) == 0 {
