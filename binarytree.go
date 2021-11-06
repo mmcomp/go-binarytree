@@ -1,7 +1,6 @@
 package binarytree
 
 import (
-	"fmt"
 	"sync"
 )
 
@@ -84,7 +83,6 @@ func (receiver *Tree) InsertConnected(parentNode interface{}, childNode SingleNo
 		receiver.nodes = make(map[interface{}]SingleNode)
 	}
 
-	fmt.Println("InsertConnected")
 	receiver.nodes[parentNode].Insert(childNode)
 }
 
@@ -121,17 +119,13 @@ func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 	var index uint = 1
 	var currentLevelNodes []SingleNode = output
 	for {
-		fmt.Println("index ", index)
-		fmt.Println("currentLevelNodes ", len(currentLevelNodes))
 		if len(currentLevelNodes) == 0 {
 			break
 		}
 		output = []SingleNode{}
-		for i, nodes := range currentLevelNodes {
-			fmt.Println("i ", i, " childs ", len(nodes.GetAll()))
+		for _, nodes := range currentLevelNodes {
 			for indx := range nodes.GetAll() {
 				child := receiver.Get(indx)
-				fmt.Println("Child ", indx, " canconnect ", child.CanConnect())
 				// if child.CanConnect() {
 				output = append(output, child)
 				// }
@@ -151,13 +145,10 @@ func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 }
 
 func (receiver *Tree) InsertTree(childNode interface{}) (SingleNode, error) {
-	fmt.Println("InsertTree")
 	var level uint = 1
 	var levelNodes []SingleNode
 	for {
-		fmt.Println("checking level ", level)
 		levelNodes = receiver.LevelNodes(level)
-		fmt.Println("level nodes ", len(levelNodes))
 		if len(levelNodes) > 0 {
 			for _, node := range levelNodes {
 
@@ -172,10 +163,8 @@ func (receiver *Tree) InsertTree(childNode interface{}) (SingleNode, error) {
 }
 
 func (receiver *Tree) InsertChild(childNode interface{}, canConnect bool) (SingleNode, error) {
-	fmt.Println("InsertChild")
 	if canConnect {
 		receiver.ToggleCanConnect(childNode)
-		fmt.Println("ToggleCanConnect")
 	}
 	return receiver.InsertTree(childNode)
 }
