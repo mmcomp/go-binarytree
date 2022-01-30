@@ -1,6 +1,7 @@
 package binarytree
 
 import (
+	"errors"
 	"sync"
 )
 
@@ -157,6 +158,8 @@ func (receiver *Tree) InsertTree(childNode interface{}) (SingleNode, error) {
 					return node, nil
 				}
 			}
+		} else {
+			return nil, errors.New("no nodes to connect")
 		}
 		level++
 	}

@@ -365,6 +365,60 @@ func TestWebSocketMap_InsertTree(t *testing.T) {
 	}
 }
 
+func TestWebSocketMap_InsertTreeShouldThrowError(t *testing.T) {
+	var websocketmaps Tree = Tree{}
+	websocketmaps.SetFillNode(fillFunction)
+
+	var broadcaster *websocket.Conn = &websocket.Conn{}
+	websocketmaps.Insert(broadcaster)
+	websocketmaps.ToggleHead(broadcaster)
+	websocketmaps.ToggleCanConnect(broadcaster)
+	levelNodes := websocketmaps.LevelNodes(1)
+	if len(levelNodes) != 1 {
+		t.Errorf("Test with a broadcaster should return 1 nodes in level 1 but it retuens %d", len(levelNodes))
+	}
+	var nodeOne *websocket.Conn = &websocket.Conn{}
+	var nodeTwo *websocket.Conn = &websocket.Conn{}
+	websocketmaps.Insert(nodeOne)
+	_, err := websocketmaps.InsertTree(nodeOne)
+	if err != nil {
+		t.Errorf("Error Happend! %e", err)
+	}
+	websocketmaps.Insert(nodeTwo)
+	_, err = websocketmaps.InsertTree(nodeTwo)
+	if err != nil {
+		t.Errorf("Error Happend! %e", err)
+	}
+	levelNodes = websocketmaps.LevelNodes(2)
+	if len(levelNodes) != 0 {
+		t.Errorf("Test with 2 nodes connected to the broadcaster should return 0 nodes in level 2 because that are unavailable but it retuens %d", len(levelNodes))
+	}
+	var nodeThree *websocket.Conn = &websocket.Conn{}
+	var nodeFour *websocket.Conn = &websocket.Conn{}
+	websocketmaps.Insert(nodeThree)
+	websocketmaps.ToggleCanConnect(nodeThree)
+	_, err = websocketmaps.InsertTree(nodeThree)
+	if err == nil {
+		t.Error("Should Error Happend!")
+	}
+	if err.Error() != "no nodes to connect" {
+		t.Errorf("Error Happend! %e", err)
+	}
+	websocketmaps.Insert(nodeFour)
+	websocketmaps.ToggleCanConnect(nodeFour)
+	_, err = websocketmaps.InsertTree(nodeFour)
+	if err == nil {
+		t.Error("Should Error Happend!")
+	}
+	if err.Error() != "no nodes to connect" {
+		t.Errorf("Error Happend! %e", err)
+	}
+	levelNodes = websocketmaps.LevelNodes(3)
+	if len(levelNodes) != 0 {
+		t.Errorf("Test with 2 nodes connected to the nodeOne should return 0 nodes in level 3 that where not available for connection  but it retuens %d", len(levelNodes))
+	}
+}
+
 func TestWebSocketMap_3Aud(t *testing.T) {
 	var websocketmaps Tree = Tree{}
 	websocketmaps.SetFillNode(fillFunction)
