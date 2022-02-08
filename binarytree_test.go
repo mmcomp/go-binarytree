@@ -32,7 +32,7 @@ func (receiver *MySocket) Get(node interface{}) SingleNode {
 	return &result
 }
 
-func (receiver *MySocket) GetLength() int {
+func (receiver *MySocket) Length() int {
 	return len(receiver.ConnectedSockets)
 }
 
@@ -44,7 +44,7 @@ func (receiver *MySocket) CanConnect() bool {
 	return receiver.HasStream
 }
 
-func (receiver *MySocket) GetAll() map[interface{}]SingleNode {
+func (receiver *MySocket) All() map[interface{}]SingleNode {
 	var output map[interface{}]SingleNode = make(map[interface{}]SingleNode)
 	for indx := range receiver.ConnectedSockets {
 		result := receiver.ConnectedSockets[indx]
@@ -61,7 +61,7 @@ func (receiver *MySocket) ToggleCanConnect() {
 	receiver.HasStream = !receiver.HasStream
 }
 
-func (receiver *MySocket) GetIndex() interface{} {
+func (receiver *MySocket) Index() interface{} {
 	return receiver.Socket
 }
 
@@ -200,8 +200,8 @@ func TestWebSocketMap_InsertConnected(t *testing.T) {
 		websocketmaps.Insert(test.Input)
 		websocketmaps.InsertConnected(parent, websocketmaps.Get(test.Input))
 		parentSocket := websocketmaps.Get(parent)
-		if parentSocket.GetLength() != test.ExpectedLen {
-			t.Errorf("Test %d :  %d was expected but got %d", testNumber, test.ExpectedLen, parentSocket.GetLength())
+		if parentSocket.Length() != test.ExpectedLen {
+			t.Errorf("Test %d :  %d was expected but got %d", testNumber, test.ExpectedLen, parentSocket.Length())
 		}
 	}
 }
@@ -234,13 +234,13 @@ func TestWebSocketMap_DeleteConnected(t *testing.T) {
 		websocketmaps.Insert(test.Input)
 		websocketmaps.InsertConnected(parent, websocketmaps.Get(test.Input))
 		parentSocket := websocketmaps.Get(parent)
-		if parentSocket.GetLength() != test.ExpectedLen+1 {
-			t.Errorf("Test %d :  %d was expected but got %d", testNumber, test.ExpectedLen+1, parentSocket.GetLength())
+		if parentSocket.Length() != test.ExpectedLen+1 {
+			t.Errorf("Test %d :  %d was expected but got %d", testNumber, test.ExpectedLen+1, parentSocket.Length())
 		}
 		websocketmaps.DeleteConnected(parent, test.Input)
 		parentSocket = websocketmaps.Get(parent)
-		if parentSocket.GetLength() != test.ExpectedLen {
-			t.Errorf("Test %d :  %d was expected but got %d", testNumber, test.ExpectedLen, parentSocket.GetLength())
+		if parentSocket.Length() != test.ExpectedLen {
+			t.Errorf("Test %d :  %d was expected but got %d", testNumber, test.ExpectedLen, parentSocket.Length())
 		}
 	}
 }

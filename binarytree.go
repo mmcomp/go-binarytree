@@ -13,11 +13,11 @@ type SingleNode interface {
 	Delete(interface{})
 	ToggleHead()
 	ToggleCanConnect()
-	GetLength() int
+	Length() int
 	IsHead() bool
 	CanConnect() bool
-	GetAll() map[interface{}]SingleNode
-	GetIndex() interface{}
+	All() map[interface{}]SingleNode
+	Index() interface{}
 }
 
 type Tree struct {
@@ -125,7 +125,7 @@ func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 		}
 		output = []SingleNode{}
 		for _, nodes := range currentLevelNodes {
-			for indx := range nodes.GetAll() {
+			for indx := range nodes.All() {
 				child := receiver.Get(indx)
 				if child.CanConnect() {
 					output = append(output, child)
@@ -153,8 +153,8 @@ func (receiver *Tree) InsertTree(childNode interface{}) (SingleNode, error) {
 		if len(levelNodes) > 0 {
 			for _, node := range levelNodes {
 
-				if node.GetLength() < 2 {
-					receiver.InsertConnected(node.GetIndex(), receiver.Get(childNode))
+				if node.Length() < 2 {
+					receiver.InsertConnected(node.Index(), receiver.Get(childNode))
 					return node, nil
 				}
 			}
