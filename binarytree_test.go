@@ -198,7 +198,7 @@ func TestWebSocketMap_InsertConnected(t *testing.T) {
 
 	for testNumber, test := range tests {
 		websocketmaps.Insert(test.Input)
-		websocketmaps.InsertConnected(parent, websocketmaps.Get(test.Input))
+		websocketmaps.insertConnected(parent, websocketmaps.Get(test.Input))
 		parentSocket := websocketmaps.Get(parent)
 		if parentSocket.Length() != test.ExpectedLen {
 			t.Errorf("Test %d :  %d was expected but got %d", testNumber, test.ExpectedLen, parentSocket.Length())
@@ -232,7 +232,7 @@ func TestWebSocketMap_DeleteConnected(t *testing.T) {
 
 	for testNumber, test := range tests {
 		websocketmaps.Insert(test.Input)
-		websocketmaps.InsertConnected(parent, websocketmaps.Get(test.Input))
+		websocketmaps.insertConnected(parent, websocketmaps.Get(test.Input))
 		parentSocket := websocketmaps.Get(parent)
 		if parentSocket.Length() != test.ExpectedLen+1 {
 			t.Errorf("Test %d :  %d was expected but got %d", testNumber, test.ExpectedLen+1, parentSocket.Length())
@@ -293,10 +293,10 @@ func TestWebSocketMap_LevelNodes(t *testing.T) {
 	var nodeTwo *websocket.Conn = &websocket.Conn{}
 	websocketmaps.Insert(nodeOne)
 	websocketmaps.ToggleCanConnect(nodeOne)
-	websocketmaps.InsertConnected(broadcaster, websocketmaps.Get(nodeOne))
+	websocketmaps.insertConnected(broadcaster, websocketmaps.Get(nodeOne))
 	websocketmaps.Insert(nodeTwo)
 	websocketmaps.ToggleCanConnect(nodeTwo)
-	websocketmaps.InsertConnected(broadcaster, websocketmaps.Get(nodeTwo))
+	websocketmaps.insertConnected(broadcaster, websocketmaps.Get(nodeTwo))
 	levelNodes = websocketmaps.LevelNodes(2)
 	if len(levelNodes) != 2 {
 		t.Errorf("Test with 2 nodes connected to the broadcaster should return 2 nodes in level 2 but it retuens %d", len(levelNodes))
@@ -305,10 +305,10 @@ func TestWebSocketMap_LevelNodes(t *testing.T) {
 	var nodeFour *websocket.Conn = &websocket.Conn{}
 	websocketmaps.Insert(nodeThree)
 	websocketmaps.ToggleCanConnect(nodeThree)
-	websocketmaps.InsertConnected(nodeOne, websocketmaps.Get(nodeThree))
+	websocketmaps.insertConnected(nodeOne, websocketmaps.Get(nodeThree))
 	websocketmaps.Insert(nodeFour)
 	websocketmaps.ToggleCanConnect(nodeFour)
-	websocketmaps.InsertConnected(nodeOne, websocketmaps.Get(nodeFour))
+	websocketmaps.insertConnected(nodeOne, websocketmaps.Get(nodeFour))
 	levelNodes = websocketmaps.LevelNodes(3)
 	if len(levelNodes) != 2 {
 		t.Errorf("Test with 2 nodes connected to the nodeOne should return 2 nodes in level 3 but it retuens %d", len(levelNodes))
