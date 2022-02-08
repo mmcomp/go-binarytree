@@ -270,7 +270,7 @@ func TestWebSocketMap_GetAll(t *testing.T) {
 
 	for testNumber, test := range tests {
 		websocketmaps.Insert(test.Input)
-		allNodes := websocketmaps.GetAll()
+		allNodes := websocketmaps.All()
 		if len(allNodes) != test.ExpectedLen {
 			t.Errorf("Test %d :  %d was expected but got %d", testNumber, test.ExpectedLen, len(allNodes))
 		}

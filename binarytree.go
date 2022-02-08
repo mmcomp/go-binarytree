@@ -94,7 +94,7 @@ func (receiver *Tree) DeleteConnected(parentNode, childNode interface{}) {
 	receiver.nodes[parentNode].Delete(childNode)
 }
 
-func (receiver *Tree) GetAll() map[interface{}]SingleNode {
+func (receiver *Tree) All() map[interface{}]SingleNode {
 	receiver.mutex.Lock()
 	defer receiver.mutex.Unlock()
 
