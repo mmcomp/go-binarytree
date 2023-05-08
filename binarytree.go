@@ -68,6 +68,10 @@ func (receiver *Tree) Get(node interface{}) SingleNode {
 	return receiver.nodes[node]
 }
 
+func (receiver *Tree) get(node interface{}) SingleNode{
+	return receiver.nodes[node]
+}
+
 func (receiver *Tree) Delete(node interface{}) {
 	receiver.mutex.Lock()
 	defer receiver.mutex.Unlock()
@@ -140,7 +144,7 @@ func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 		output = []SingleNode{}
 		for _, nodes := range currentLevelNodes {
 			for indx := range nodes.All() {
-				child := receiver.Get(indx)
+				child := receiver.get(indx)
 				if child.CanConnect() {
 					output = append(output, child)
 				}
