@@ -277,6 +277,38 @@ func TestWebSocketMap_GetAll(t *testing.T) {
 	}
 }
 
+func TestWebSocketMap_GetNodes(t *testing.T) {
+	var websocketmaps Tree = Tree{}
+	websocketmaps.SetFillNode(fillFunction)
+
+	tests := []struct {
+		Input *websocket.Conn
+
+		ExpectedLen int
+	}{
+		{
+			Input:       &websocket.Conn{},
+			ExpectedLen: 1,
+		},
+		{
+			Input:       &websocket.Conn{},
+			ExpectedLen: 2,
+		},
+		{
+			Input:       &websocket.Conn{},
+			ExpectedLen: 3,
+		},
+	}
+
+	for testNumber, test := range tests {
+		websocketmaps.Insert(test.Input)
+		allNodes := websocketmaps.Nodes()
+		if len(allNodes) != test.ExpectedLen {
+			t.Errorf("Test %d :  %d was expected but got %d", testNumber, test.ExpectedLen, len(allNodes))
+		}
+	}
+}
+
 func TestWebSocketMap_LevelNodes(t *testing.T) {
 	var websocketmaps Tree = Tree{}
 	websocketmaps.SetFillNode(fillFunction)

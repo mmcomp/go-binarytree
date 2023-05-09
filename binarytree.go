@@ -62,6 +62,13 @@ func (receiver *Tree) ToggleCanConnect(node interface{}) {
 }
 
 func (receiver *Tree) Get(node interface{}) SingleNode {
+	receiver.mutex.Lock()
+	defer receiver.mutex.Unlock()
+
+	return receiver.nodes[node]
+}
+
+func (receiver *Tree) get(node interface{}) SingleNode{
 	return receiver.nodes[node]
 }
 
@@ -101,6 +108,17 @@ func (receiver *Tree) All() map[interface{}]SingleNode {
 	return receiver.nodes
 }
 
+func (receiver *Tree) Nodes() []SingleNode {
+	receiver.mutex.Lock()
+	defer receiver.mutex.Unlock()
+
+	var nodes []SingleNode
+	for _, node := range receiver.nodes {
+		nodes = append(nodes, node)
+	}
+	return nodes
+}
+
 func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 	receiver.mutex.Lock()
 	defer receiver.mutex.Unlock()
@@ -126,7 +144,7 @@ func (receiver *Tree) LevelNodes(level uint) []SingleNode {
 		output = []SingleNode{}
 		for _, nodes := range currentLevelNodes {
 			for indx := range nodes.All() {
-				child := receiver.Get(indx)
+				child := receiver.get(indx)
 				if child.CanConnect() {
 					output = append(output, child)
 				}
